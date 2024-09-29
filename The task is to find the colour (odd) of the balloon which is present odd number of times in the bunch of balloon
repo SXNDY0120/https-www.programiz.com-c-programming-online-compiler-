@@ -1,0 +1,20 @@
+from collections import Counter
+
+def find_odd_balloon(N, balloons):
+    # Count the frequency of each balloon color
+    freq = Counter(balloons)
+
+    # Iterate through the list of balloons and check the frequency
+    for balloon in balloons:
+        if freq[balloon] % 2 != 0:
+            return balloon
+    
+    # If no odd frequency found, return "All are even"
+    return "All are even"
+
+# Example usage
+N = int(input())  # Input the number of balloons
+balloons = [input().strip() for _ in range(N)]  # Input each balloon color
+
+result = find_odd_balloon(N, balloons)
+print(result)
