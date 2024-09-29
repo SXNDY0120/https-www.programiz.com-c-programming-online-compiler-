@@ -1,0 +1,18 @@
+def max_of_min_subarrays(arr, k):
+    n = len(arr)
+    if k > n:
+        return None
+    
+    min_vals = []
+
+    # Loop to find the minimum of each contiguous subarray of size k
+    for i in range(n - k + 1):
+        min_vals.append(min(arr[i:i+k]))
+
+    # Return the maximum value among the minimums
+    return max(min_vals)
+
+# Example usage
+arr = [1, 2, 3, 1, 2]
+k = 1
+print(max_of_min_subarrays(arr, k))  # Output: 3
