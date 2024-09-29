@@ -1,0 +1,60 @@
+def count_frogs_between_stones(s, start_indices, end_indices):
+    n = len(s)
+    
+    # Prefix sum to count frogs ('*') up to each index
+    frog_count = [0] * (n + 1)
+    
+    # Stones' positions
+    last_stone_left = [-1] * n  # Position of the last stone encountered from the left
+    next_stone_right = [-1] * n  # Position of the next stone encountered from the right
+
+    # Build frog_count prefix sum and stone positions
+    frog_cumsum = 0
+    for i in range(n):
+        if s[i] == '*':
+            frog_cumsum += 1
+        frog_count[i + 1] = frog_cumsum
+        
+    # Fill the last_stone_left array
+    last_stone = -1
+    for i in range(n):
+        if s[i] == '|':
+            last_stone = i
+        last_stone_left[i] = last_stone
+    
+    # Fill the next_stone_right array
+    next_stone = -1
+    for i in range(n - 1, -1, -1):
+        if s[i] == '|':
+            next_stone = i
+        next_stone_right[i] = next_stone
+
+    # Result list
+    result = []
+    
+    # Answer queries
+    for start, end in zip(start_indices, end_indices):
+        # Convert to 0-based indices
+        start -= 1
+        end -= 1
+        
+        # Find the valid stone range
+        left_stone = next_stone_right[start]
+        right_stone = last_stone_left[end]
+        
+        # Check if there's a valid pair of stones
+        if left_stone != -1 and right_stone != -1 and left_stone < right_stone:
+            result.append(frog_count[right_stone] - frog_count[left_stone + 1])
+        else:
+            result.append(0)
+    
+    return result
+
+# Sample Input
+s = "||"
+start_indices = [1]
+end_indices = [3]
+
+# Output the result
+output = count_frogs_between_stones(s, start_indices, end_indices)
+print(output)
